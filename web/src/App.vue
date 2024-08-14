@@ -25,6 +25,7 @@ import { } from 'vue-tg'
   const handleMainButtonProgress = () => {
     mainButton.showMainButtonProgress();
   }
+
   function handleScanResult(data: string) {
   // ...
   }
@@ -34,13 +35,16 @@ import { } from 'vue-tg'
   console.log('handleSettingsButton clicked')
 }
 
-
 </script>
 
 <template>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
+    <nav>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </nav>
+    <router-view/>
     <div class="wrapper">
       <!-- <MiniApp msg="You did it!" /> -->
       <button @click="handleMainButtonProgress">Прогресс</button>
@@ -60,7 +64,6 @@ import { } from 'vue-tg'
     <!-- запускает Camera QR-->  
     <SettingsButton @click="handleSettingsButton" />
 
-    
     <!-- не понятно -->
     <!-- <tg-expanded-viewport force='true'/> -->
     <!-- <BiometricManager @init='handleInit' /> -->

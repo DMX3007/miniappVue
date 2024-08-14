@@ -21,7 +21,9 @@ bot.start((ctx) => {
   const lastName = ctx.from.last_name;
   const username = ctx.from.username;
 
+	
 	console.log('start')
+	console.log(ctx, 'ctx')
   console.log(`User ID: ${userId}`);
   console.log(`First Name: ${firstName}`);
   console.log(`Last Name: ${lastName}`);
@@ -38,8 +40,15 @@ bot.start((ctx) => {
   )
 })
 
+bot.command("inlinekb", ctx =>
+	ctx.reply(
+		"Launch mini app from inline keyboard!",
+		Markup.inlineKeyboard([Markup.button.webApp("Launch", process.env.WEB_APP_URL_ABOUT)]),
+	),
+);
+
 bot.command("setmenu", ctx =>
-	// sets Web App as the menu button for current chat
+// 	// sets Web App as the menu button for current chat
 	ctx.setChatMenuButton({
 		text: "Launch",
 		type: "web_app",
@@ -53,8 +62,6 @@ bot.command("keyboard", ctx =>
 		Markup.keyboard([Markup.button.webApp("Launch", process.env.WEB_APP_URL)]).resize(),
 	),
 );
-
-bot.launch()
 
 bot.on('message', async (ctx) => {
 	console.log('on message')
@@ -80,6 +87,8 @@ bot.on('message', async (ctx) => {
 	console.log(ctx.update.message.from.chat)
 });
 
+bot.launch()
+
 app.use((req, res, next) => {
 	console.log(req.method, req.url);
 	return next();
@@ -87,6 +96,22 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/index.html");
+});
+
+app.get("/bot/command", (req, res) => {
+  // Simulate a Telegram context object
+  const ctx = {
+    reply: (text, markup) => {
+      console.log(text,'text');
+      console.log(markup, 'markup');
+    }
+  };
+	console.log(bot.context, 'bot.context')
+	console.log(bot, 'bot')
+
+  // Manually call the inlinekb command handler
+
+  res.send('Command executed');
 });
 
 // app.get('/user/:id', (req, res) => {
